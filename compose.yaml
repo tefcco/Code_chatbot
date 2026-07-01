@@ -1,0 +1,38 @@
+name: "Chatbot-app"
+
+services:
+
+  backend:
+    build:
+      context: ./backend
+    image: chatbot-back-img
+    container_name: chatbot-back-cont
+    env_file: ./env/backend.env
+    ports:
+      - "8000:8000"
+    networks:
+      - chatbot-network
+    volumes:
+      - ./backend:/app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./frontend
+    image: chatbot-front-img
+    container_name: chatbot-front-cont
+    ports:
+      - "80:80"
+    networks:
+      - chatbot-network
+    depends_on:
+      - backend
+
+networks:
+  chatbot-network:
+    name: "Chatbot-network"
+    driver: bridge

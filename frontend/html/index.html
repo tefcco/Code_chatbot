@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Code Chatbot</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <span class="header-logo">&lt;/&gt;</span>
+            <span class="header-title">Code Chatbot</span>
+        </div>
+        <div class="header-right">
+            <label for="personality" class="persona-label">Reviewer:</label>
+            <select id="personality" class="persona-select">
+                <option value="senioreng">Senior Engineer</option>
+                <option value="tutor">Tutor</option>
+                <option value="cybersec">Security Auditor</option>
+            </select>
+        </div>
+    </header>
+
+    <main class="chat-area" id="chatArea">
+        <div class="message bot">
+            <div class="bubble">Dobro dosli! Nalepite vas kod koristeci <strong>Code &lt;/&gt;</strong> dugme, odaberite jezik u kome ste pisali, i Bot ce vam pregledati kod. Odaberi licnost koju zelite da vam pregleda kod za drugaciji stil odgovora.</div>
+        </div>
+    </main>
+
+    <footer class="input-area">
+        <div class="code-panel hidden" id="codePanel">
+            <div class="code-panel-header">
+                <select id="language" class="language-select">
+                    <option value="auto-detect">Detektuj jezik</option>
+                    <option value="Python">Python</option>
+                    <option value="JavaScript">JavaScript</option>
+                    <option value="Java">Java</option>
+                    <option value="C">C</option>
+                    <option value="C++">C++</option>
+                    <option value="JavaScript">JavaScript</option>
+                    <option value="SQL">SQL</option>
+                </select>
+                <button class="close-btn" onclick="toggleCodePanel()" title="Close">✕</button>
+            </div>
+            <textarea
+                id="codeInput"
+                class="code-textarea"
+                placeholder="Nalepite svoj kod ovde..."
+                spellcheck="false"
+            ></textarea>
+        </div>
+
+        <div class="input-bar">
+            <button class="btn-code" id="codeToggleBtn" onclick="toggleCodePanel()">
+                Code &lt;/&gt;
+            </button>
+            <button class="btn-send" id="sendBtn" onclick="submitReview()">
+                Review!
+            </button>
+        </div>
+
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
