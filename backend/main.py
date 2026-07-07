@@ -1,10 +1,13 @@
 import os
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from google import genai
 from pathlib import Path
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+
 
 load_dotenv()   
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
@@ -14,6 +17,8 @@ if not GEMINI_API_KEY:
 
 client = genai.Client(api_key=GEMINI_API_KEY)
 app = FastAPI(title="Code Chatbot")
+limiter=Limiter(key_func=get_remote_address)
+app.state.limiter=limiter
 
 app.add_middleware(
     CORSMiddleware,
@@ -35,7 +40,8 @@ def health():
     return {"status": "ok"}
 
 @app.post("/review", response_model=ReviewResponse)
-def review_code(body: Review):
+@limiter.limit("10/minute")
+async def review_code(request: Request, body: Review):
 
     if not body.code.strip():
         raise HTTPException(status_code=400, detail="Kod ne sme biti prazan. Upisi kod za pregled")
